@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "main.h"
 
-MqttClient mqttClient;
+mqtt_status connectionStatus = MS_UNINITIALIZED;
 
 void setup() {
   Serial.begin(9600);
@@ -9,7 +9,11 @@ void setup() {
   pinMode(14, OUTPUT);
   pinMode(12, OUTPUT);
 
-  mqttClient.init();
+  connectionStatus = initMqttConnection();
+  if (connectionStatus != MS_MQTT_CONNECTED) {
+    Serial.print("Connection failed: ");
+    Serial.println(connectionStatus);
+  }
 }
 
 void loop() {
