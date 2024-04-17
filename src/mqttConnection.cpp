@@ -8,6 +8,10 @@ PubSubClient pubSubClient(wifiClient);
 
 mqtt_status initMqttConnection() {
 
+    if (pubSubClient.connected()) {
+        return MS_MQTT_CONNECTED;
+    }
+
     //Connect to wifi
     mqtt_status currentStatus = connectToWiFi();
     
@@ -15,22 +19,18 @@ mqtt_status initMqttConnection() {
         return currentStatus;
     }
 
-    //SetUp broker configuration
-    pubSubClient.setServer(MQTT_HOST.c_str(), MQTT_PORT);
-    pubSubClient.setCallback(callback);
-
     //Broker connection
     currentStatus = checkBrokerConnection();
-    if(currentStatus == MS_MQTT_CONNECTED){
-        // Subscribe
-        // pubSubClient.subscribe("esp32/output");
-    } 
-
+    
     return currentStatus;
 }
 
 mqtt_status connectToWiFi() {
     int start = millis();
+
+    if (WiFi.status() == WL_CONNECTED) {
+        return MS_WIFI_CONNECTED;
+    }
 
     if (!WiFi.begin(
                 WIFI_SSID,
@@ -56,15 +56,32 @@ mqtt_status connectToWiFi() {
 mqtt_status checkBrokerConnection() {
     int start = millis();
 
+    //SetUp broker configuration
+    pubSubClient.setServer(MQTT_HOST.c_str(), MQTT_PORT);
+    pubSubClient.setCallback(callback);
+
     while (!pubSubClient.connected()) {
         Serial.print("Attempting MQTT connection...");
         
-        if (pubSubClient.connect("wifiClient")) {
-          Serial.println("connected");
-          return MS_MQTT_CONNECTED;
+        if (pubSubClient.connect(MQTT_CLIENTID.c_str(), MQTT_USER.c_str(), MQTT_PASS.c_str())) {
+            //No auth
+        // if (pubSubClient.connect("wifiClient")) {
+
+            // String topic = "channels/2493191/publish/fields/field2";
+            // String data = "10";
+            // pubSubClient.publish(topic.c_str(), data.c_str());
+
+            String topic = "channels/2493191/subscribe";
+            // channels/2493191/subscribe/fields/field2
+            // if (pubSubClient.subscribe(topic.c_str())) {
+            if (pubSubClient.subscribe("channels/2493191/subscribe")) {
+                Serial.println("Subscribed");
+            }
+            
+            Serial.println("Connected");
+            return MS_MQTT_CONNECTED;
           
         }
-        
         Serial.print("MQTT failed, rc=");
         Serial.println(pubSubClient.state());
         
@@ -79,7 +96,9 @@ mqtt_status checkBrokerConnection() {
 
 void callback(char* topic, byte* message, unsigned int length) {
     // Todo: Handle topic subscription
-    Serial.println(topic);
+    Serial.println("Message recieved");
+    Serial.println(String(topic));
+    //Serial.println(message);
     // switch (topic) {
     //     case "Change light":
     //         //handle change lighr:

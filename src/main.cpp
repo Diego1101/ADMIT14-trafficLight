@@ -9,7 +9,6 @@ void setup() {
   pinMode(14, OUTPUT);
   pinMode(12, OUTPUT);
 
-  connectionStatus = initMqttConnection();
   if (connectionStatus != MS_MQTT_CONNECTED) {
     Serial.print("Connection failed: ");
     Serial.println(connectionStatus);
@@ -17,12 +16,28 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(27, HIGH);
-  digitalWrite(14, HIGH);
-  digitalWrite(12, LOW);
-  delay(300);
-  digitalWrite(27, LOW);
-  digitalWrite(12, HIGH);
-  digitalWrite(14, LOW);
-  delay(300);
+  connectionStatus = initMqttConnection();
+
+  switch (connectionStatus) {
+  case MS_MQTT_CONNECTED:
+    digitalWrite(27, HIGH);
+    digitalWrite(14, LOW);
+    digitalWrite(12, LOW);
+    break;
+
+  case MS_WIFI_FAILED:
+    digitalWrite(27, LOW);
+    digitalWrite(14, HIGH);
+    digitalWrite(12, LOW);
+    break;
+
+  case MS_MQTT_FAILED:
+    digitalWrite(27, LOW);
+    digitalWrite(14, LOW);
+    digitalWrite(12, HIGH);
+    break;
+  
+  default:
+    break;
+  }
 }
