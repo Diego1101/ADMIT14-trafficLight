@@ -1,129 +1,197 @@
-# Data Definition
+# Interface definition
+
+- [Interface definition](#interface-definition)
+  - [MQTT protocolo](#mqtt-protocolo)
+  - [Vehicle](#vehicle)
+    - [Vehicle position (vh\_position)](#vehicle-position-vh_position)
+      - [Details](#details)
+      - [Example](#example)
+    - [Vehicle weather request (vh\_weather)](#vehicle-weather-request-vh_weather)
+      - [Details](#details-1)
+      - [Example](#example-1)
+    - [Vehicle parking request (vh\_parking)](#vehicle-parking-request-vh_parking)
+      - [Details](#details-2)
+      - [Example](#example-2)
+  - [Traffic Light](#traffic-light)
+    - [Traffic light information (tl\_status)](#traffic-light-information-tl_status)
+      - [Details](#details-3)
+      - [Example](#example-3)
+  - [Back-End](#back-end)
+    - [Weather condition (bk\_weather)](#weather-condition-bk_weather)
+      - [Details](#details-4)
+      - [Example](#example-4)
+    - [Parking spot status (bk\_parking)](#parking-spot-status-bk_parking)
+      - [Details](#details-5)
+      - [Example](#example-5)
+    - [Collision warning (bk\_collision)](#collision-warning-bk_collision)
+      - [Details](#details-6)
+      - [Example](#example-6)
+    - [Traffic Light status (bk\_tl\_status)](#traffic-light-status-bk_tl_status)
+      - [Details](#details-7)
+      - [Example](#example-7)
+
 
 ## MQTT protocolo
 
-MQTT protocol is used as its light weight and can support multiple IOT devices comunucation at the same time. This protocolo allow us to send up to **256MiB** wich is enough for our expected usage.
+MQTT protocol is used as its light weight and supports multiple IoT devices communicating at the same time. This protocol allow us to send up to **256MiB** which is enough for the expected usage.
 
+![image](contextDiagram.png)
 
-## Topics
+## Vehicle
 
-Below is the description of the topics to be used by the V2X first implementation of intelligent traffic lights
+### Vehicle position (vh_position)
 
-**/vehicle/data/{Id}**: Topic dedicated for vehile data, the model [v_data](#vehicle-information-v_data) is used to send the information. The {Id} place holder represents the id of the vehicle the data respresents.
+Message send by the vehicle each **\<seconds>** to the topic **TDB**
 
-**/trafficLigh/data/{Id}**: Topic dedicated for traffic light data, the model [tl_data](#traffic-light-information-tl_data) is used to send the information. The {Id} place holder represents the id of the traffic light the data respresents.
-
-**trafficLigh/change/{Id}**: Topic dedicated to send the desired change for a defined traffic light, the {Id} place represent the id if the traffic light wich state should be changed. The model [tl_change](#traffic-light-change-tl_change) is used to send the information.
-
-Unfortunately ThingSpeak doestn allow us to change the topics, thus the follow equivalences will be used for the first phase.
-
-| Topic | ThingSpeak | Notes |
-| -- | -- | -- |
-| /vehicle/data/{Id} | TBD | - |
-| /trafficLigh/data/{Id} | TBD | - |
-| /trafficLigh/change/{Id} | TBD | - |
-
-
-## Vehicle information (v_data)
-
-Message send by the vehicle each 20 second to the topic **/vehicle/data/{Id}**
-
-### Details 
+#### Details 
 | Name | Type | Size | Detail |
 | ---- | ---- | ---- | ------ |
 | Id | int | - | Id of the vehicle |
-| Position | float array | 2 | Latitud and lingitud of the vechile |
-| Speed | int | - | Current speed of the vehicle in K/h |
-| Heading | int | - | Current heading in degrees of the vehicle |
-| Next_Turn? | Object | 2 | Distance in meters and heading of the next turn |
+| Position | float array | 2 | Latitud and Longitude of the vehicle |
 
-> NOTES: Check if it will be posible to get the next turn information, also the amount of posible options for the turn.
-> 
-> Is there streen names? relative headings or absolute headings?
->
-> Define frecuency of message for vechicles
-
-### Example
+#### Example
 
 ```json
 {
     "Id": 1,
-    "Position": [48.738534, 9.311124],
-    "Speed": 60,
-    "Heading": 90,
-    "Next_Turn":? {
-        "Distance": 100,
-        "Heading": 180
-    }
+    "Position": [48.738534, 9.311124]
 }
 ```
 
-## Traffic light information (tl_data)
+### Vehicle weather request (vh_weather)
 
-Message by the traffic light on initial connection and each time its state changes, the topic to be used for this message is **/trafficLigh/data/{id}**
+Message send by the vehicle each time the weather is needed to the topic **TDB**
 
-### Details 
+#### Details 
 | Name | Type | Size | Detail |
 | ---- | ---- | ---- | ------ |
-| Id | int | - | Id of the trafic light |
-| Position | float array | 2 | Latitud and longitud of the trafic light position |
-| Current_State | int | - | Current state of the traffic light |
-| States? | array | n | List of states the traffic light can have |
-| States? | object array | n | Detal of states the traffic light can be into |
-| Headings? | object array | n | List of headings the traffic light can redirect |
- 
- >NOTES: TBD How are states going to be handled?
+| Id | int | - | Id of the vehicle |
+| Position | float array | 2 | Latitud and lingitude of the request |
 
+#### Example
 
-### Example
 ```json
 {
     "Id": 1,
-    "Position": [48.738534, 9.311124],
-    "Current_State": 4,
-    "States":? [1, 2, 3, 4],
-    "States":? [
-        {
-            "Id": 1,
-            "Headings": [[10, 40], [30, 20], [110 180], [110 180]]
-        }
-    ],
-    "Headings":? [
-        {
-            "from": 0,
-            "to": 90
-        },
-        {
-            "from": 270,
-            "to": 270
-        }
-    ]
+    "Position": [48.738534, 9.311124]
 }
 ```
 
-## Traffic light change (tl_change)
+### Vehicle parking request (vh_parking)
 
-Message send by matlab each time a change is required by a traffic light, send to the topic **trafficLigh/change/{id}**
+Message send to the topic **TDB** by the vehicle each each time a parking spot is needed.
 
-### Details 
+#### Details 
+| Name | Type | Size | Detail |
+| ---- | ---- | ---- | ------ |
+| Id | int | - | Id of the vehicle |
+| Position | float array | 2 | Latitud and longitude of the request |
+
+#### Example
+
+```json
+{
+    "Id": 1,
+    "Destination": [48.738534, 9.311124]
+}
+```
+
+## Traffic Light
+### Traffic light information (tl_status)
+
+Message send by the traffic light each **\<seconds>** to the topic **TDB**
+
+#### Details 
 | Name | Type | Size | Detail |
 | ---- | ---- | ---- | ------ |
 | Id | int | - | Id of the traffic light |
-| New_State? | int | - |  New desired state for the traffic light |
-| Headings? | array | 2 | Heading to allow traffic
+| Status | int | - | 0: Green, 1: Red, 2: Yellow |
+| Position | float array | 2 | Latitud and longitude of the traffic light position |
+| Time_to_Change | int | - | Time for the status to change |
 
-> NOTES: How are states being handled?
 
-### Example
+#### Example
 ```json
 {
     "Id": 1,
-    "New_State":? 2,
-    "Headings":? [0, 90]
+    "Status": 2,
+    "Position": [48.738534, 9.311124],
+    "Time_to_Change": 100
+}
+```
+## Back-End
+### Weather condition (bk_weather)
+
+Message send by the back-end to the topic **TDB** each time a request for weather is received.
+
+#### Details 
+| Name | Type | Size | Detail |
+| ---- | ---- | ---- | ------ |
+| Condition | int | - | 0: Good, 1: Regular, 2: Bad, 3: Very Bad|
+| Temperature | float | - | Current ambient temperature <C°> |
+
+#### Example
+```json
+{
+    "Condtion": 1,
+    "Temperature": 20
+}
+```
+### Parking spot status (bk_parking)
+
+Message send by the back-end to the topic **TDB** each time a request for a parking spot is recieved.
+
+#### Details 
+| Name | Type | Size | Detail |
+| ---- | ---- | ---- | ------ |
+| Available | boolean | - | Indicates if a parking spot is available at the requested location |
+
+#### Example
+```json
+{
+    "Available": 1,
 }
 ```
 
-## Concerns
+### Collision warning (bk_collision)
 
-- ThingSpeak api only allow us to send one message each 15 seconds
-- Free tier of ThingSpeak api only allow 80,000 messaged per day
+Message send by the back-end to the topic **TDB** each time a possible collision is detected.
+
+#### Details 
+| Name | Type | Size | Detail |
+| ---- | ---- | ---- | ------ |
+| Warning | boolean | - | Indicated whether is a warning or not |
+| Direction | float | - | Direction of object |
+
+#### Example
+```json
+{
+    "Warning": 1,
+    "Direction": 20
+}
+```
+
+
+### Traffic Light status (bk_tl_status)
+
+Message send by the back-end to the topic **TDB** each time a vehicle is close to a traffic light.
+
+This message will stop for **\<meters>** for a vehicle after crossing a traffic light.
+
+#### Details 
+| Name | Type | Size | Detail |
+| ---- | ---- | ---- | ------ |
+| Id | boolean | - | Id of the traffic light |
+| Status | int | - | Current status of the traffic light |
+| Time_to_Change | int | - | Time for the traffic light to change its status |
+| Distance | int | - | Current distance to the traffic light |
+
+#### Example
+```json
+{
+    "Id": 1,
+    "Status": 2,
+    "Time_to_Change": 20,
+    "Distance": 20,
+}
+```
