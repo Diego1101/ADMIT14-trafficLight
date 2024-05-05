@@ -113,7 +113,17 @@ void callback(char* topic, byte* message, unsigned int length) {
     // }
 }
 
-void sendMessage(unsigned int tlStatus) {
-    String tlInfo = "{ tlStatus }";
-    pubSubClient.publish(TOPIC.c_str(), tlInfo.c_str());
+void sendMessage(unsigned int tlStatus, unsigned int timeChange) {
+
+    String info = "{";
+    info.concat("\"Id\":");
+    info.concat(1);
+    info.concat(",\"Status\":");
+    info.concat(tlStatus);
+    info.concat(",\"Position\": [48.738534, 9.311124],");
+    info.concat(",\"Time_to_Change\":");
+    info.concat(timeChange);
+    info.concat("}");
+
+    pubSubClient.publish(TOPIC.c_str(), info.c_str());
 }

@@ -26,6 +26,6 @@ void callback(char* topic, byte* message, unsigned int length);
 mqtt_status initMqttConnection();
 mqtt_status connectToWiFi();
 mqtt_status checkBrokerConnection();
-void sendMessage(unsigned int tlStatus);
+void sendMessage(unsigned int tlStatus, unsigned int timeChange);
 
 #endif /* _MQTTCLIENT_H_ */
