@@ -99,6 +99,10 @@ void callback(char* topic, byte* message, unsigned int length) {
     // ToDo: Handle topic subscription
     Serial.print("Message recieved: ");
     Serial.println(String(topic));
+    for (int i=0;i<length;i++) {
+        Serial.print((char)message[i]);
+    }
+    Serial.println();
     //Serial.println(message);
     // switch (topic) {
     //     case "Change light":
@@ -107,4 +111,9 @@ void callback(char* topic, byte* message, unsigned int length) {
     //     default:
     //         break;
     // }
+}
+
+void sendMessage(unsigned int tlStatus) {
+    String tlInfo = "{ tlStatus }";
+    pubSubClient.publish(TOPIC.c_str(), tlInfo.c_str());
 }

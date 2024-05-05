@@ -18,10 +18,14 @@ const String MQTT_CLIENTID = "MyEMAhMkEAI4KgcWOSY0DDw";
 const String MQTT_USER = "MyEMAhMkEAI4KgcWOSY0DDw";
 const String MQTT_PASS = "xHBnVTTkNU3wstEf/Bnil7mV";
 
+//Topic info
+const String TOPIC = "channels/2493191/publish/fields/field2";
+
 // Functions
 void callback(char* topic, byte* message, unsigned int length);
 mqtt_status initMqttConnection();
 mqtt_status connectToWiFi();
 mqtt_status checkBrokerConnection();
+void sendMessage(unsigned int tlStatus);
 
 #endif /* _MQTTCLIENT_H_ */
