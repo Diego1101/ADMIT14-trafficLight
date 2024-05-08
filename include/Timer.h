@@ -15,4 +15,5 @@ class Timer {
         bool isExpired(); //timer can only expire when active!
         bool isActive();
         void deactivate();
+        unsigned long int remainingTime();
 };

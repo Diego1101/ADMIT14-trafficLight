@@ -72,7 +72,7 @@ void handleLightChange() {
 
 void handleInfoSend() {
   if (Timer_Info_Send.isExpired()) {
-    sendMessage(Light_Status, 1000);
+    sendMessage(Light_Status, Timer_LightChange.remainingTime());
     Timer_Info_Send.startNow();
   }
 }

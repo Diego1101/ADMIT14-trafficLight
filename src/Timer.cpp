@@ -26,3 +26,6 @@ void Timer::setDuration(unsigned long int td){
 void Timer::deactivate(){
     active = false;
 }
+unsigned long int Timer::remainingTime(){
+    return starttime + duration - millis();
+}

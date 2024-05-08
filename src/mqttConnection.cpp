@@ -68,7 +68,8 @@ mqtt_status checkBrokerConnection() {
     while (!pubSubClient.connected()) {
         Serial.print("Attempting MQTT connection...");
         
-        if (pubSubClient.connect(MQTT_CLIENTID.c_str(), MQTT_USER.c_str(), MQTT_PASS.c_str())) {
+        // if (pubSubClient.connect(MQTT_CLIENTID.c_str(), MQTT_USER.c_str(), MQTT_PASS.c_str())) {
+        if (pubSubClient.connect(MQTT_CLIENTID.c_str())) {
 
             // TEST: Publish
             // String topic = "channels/2493191/publish/fields/field2";
@@ -117,7 +118,7 @@ void sendMessage(unsigned int tlStatus, unsigned int timeChange) {
 
     String info = "{";
     info.concat("\"Id\":");
-    info.concat(1);
+    info.concat(TL_ID);
     info.concat(",\"Status\":");
     info.concat(tlStatus);
     info.concat(",\"Position\": [48.738534, 9.311124],");
@@ -125,5 +126,9 @@ void sendMessage(unsigned int tlStatus, unsigned int timeChange) {
     info.concat(timeChange);
     info.concat("}");
 
-    pubSubClient.publish(TOPIC.c_str(), info.c_str());
+    String idTopic = TOPIC;
+    idTopic.concat("/");
+    idTopic.concat(TL_ID);
+
+    pubSubClient.publish(idTopic.c_str(), info.c_str());
 }

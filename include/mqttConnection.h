@@ -12,14 +12,14 @@ const int MAX_TIMEOUT = 10000;
 const int RETRY_DELAY = 500;
 
 const uint16_t MQTT_PORT = 1883; 
-// const String MQTT_HOST = "test.mosquitto.org";
-const String MQTT_HOST = "mqtt3.thingspeak.com";
+const String MQTT_HOST = "raspberrypi.local";
+// const String MQTT_HOST = "mqtt3.thingspeak.com";
 const String MQTT_CLIENTID = "MyEMAhMkEAI4KgcWOSY0DDw";
 const String MQTT_USER = "MyEMAhMkEAI4KgcWOSY0DDw";
 const String MQTT_PASS = "xHBnVTTkNU3wstEf/Bnil7mV";
 
 //Topic info
-const String TOPIC = "channels/2493191/publish/fields/field2";
+const String TOPIC = "trafficLight/info";
 
 // Functions
 void callback(char* topic, byte* message, unsigned int length);
