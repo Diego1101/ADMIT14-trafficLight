@@ -20,6 +20,6 @@ const unsigned int TRAFFIC_LIGH_GREEN = 10000;
 const unsigned int TRAFFIC_LIGH_YELLOW = 2000;
 const unsigned int TRAFFIC_LIGH_RED = 10000;
 const unsigned int TRAFFIC_LIGH_PREPARE = 2000;
-const unsigned int TL_INFO_SEND = 5000;
+const unsigned int TL_INFO_SEND = 500;
 void handleLightChange();
 void handleInfoSend();

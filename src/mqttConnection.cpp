@@ -121,7 +121,7 @@ void sendMessage(unsigned int tlStatus, unsigned int timeChange) {
     info.concat(TL_ID);
     info.concat(",\"Status\":");
     info.concat(tlStatus);
-    info.concat(",\"Position\": [48.738534, 9.311124],");
+    info.concat(",\"Position\": [42, 57]");
     info.concat(",\"Time_to_Change\":");
     info.concat(timeChange);
     info.concat("}");

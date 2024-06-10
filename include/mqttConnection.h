@@ -6,8 +6,8 @@
 #define _MQTTCLIENT_H_
 
 // Constants
-const String WIFI_SSID = "Plg";
-const String WIFI_PASSWORD = "dnuW0JvW";
+const String WIFI_SSID = "FRITZ!Box 7530 ZP";
+const String WIFI_PASSWORD = "22454622954454611891";
 const int MAX_TIMEOUT = 10000;
 const int RETRY_DELAY = 500;
 
