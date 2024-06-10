@@ -43,7 +43,7 @@ Message send by the vehicle each **\<seconds>** to the topic **TDB**
 
 ### Vehicle weather request (vh_weather)
 
-Message send by the vehicle each time the weather is needed to the topic **TDB**
+Message send by the vehicle each time the weather is needed to the topic **weather/info**
 
 #### Details 
 | Name | Type | Size | Detail |
@@ -62,7 +62,7 @@ Message send by the vehicle each time the weather is needed to the topic **TDB**
 
 ### Vehicle parking request (vh_parking)
 
-Message send to the topic **TDB** by the vehicle each each time a parking spot is needed.
+Message send to the topic **parking/info** by the vehicle each each time a parking spot is needed.
 
 #### Details 
 | Name | Type | Size | Detail |
@@ -82,7 +82,7 @@ Message send to the topic **TDB** by the vehicle each each time a parking spot i
 ## Traffic Light
 ### Traffic light information (tl_status)
 
-Message send by the traffic light each **\<seconds>** to the topic **TDB**
+Message send by the traffic light each **300ms** to the topic **trafficLight/info/{id}**
 
 #### Details 
 | Name | Type | Size | Detail |
@@ -105,7 +105,7 @@ Message send by the traffic light each **\<seconds>** to the topic **TDB**
 ## Back-End
 ### Weather condition (bk_weather)
 
-Message send by the back-end to the topic **TDB** each time a request for weather is received.
+Message send by the back-end to the topic **weather/info/response** each time a request for weather is received.
 
 #### Details 
 | Name | Type | Size | Detail |
@@ -122,7 +122,7 @@ Message send by the back-end to the topic **TDB** each time a request for weathe
 ```
 ### Parking spot status (bk_parking)
 
-Message send by the back-end to the topic **TDB** each time a request for a parking spot is recieved.
+Message send by the back-end to the topic **parking/info/response** each time a request for a parking spot is recieved.
 
 #### Details 
 | Name | Type | Size | Detail |
@@ -138,7 +138,7 @@ Message send by the back-end to the topic **TDB** each time a request for a park
 
 ### Collision warning (bk_collision)
 
-Message send by the back-end to the topic **TDB** each time a possible collision is detected.
+Message send by the back-end to the topic **vehicle/collision/{id}** each time a possible collision is detected.
 
 #### Details 
 | Name | Type | Size | Detail |
@@ -157,7 +157,7 @@ Message send by the back-end to the topic **TDB** each time a possible collision
 
 ### Traffic Light status (bk_tl_status)
 
-Message send by the back-end to the topic **TDB** each time a vehicle is close to a traffic light.
+Message send by the back-end to the topic **vehicle/trafficLight/{id}** each time a vehicle is close to a traffic light.
 
 This message will stop for **\<meters>** for a vehicle after crossing a traffic light.
 
