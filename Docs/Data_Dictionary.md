@@ -88,7 +88,7 @@ Message send by the traffic light each **300ms** to the topic **trafficLight/inf
 | Name | Type | Size | Detail |
 | ---- | ---- | ---- | ------ |
 | Id | int | - | Id of the traffic light |
-| Status | int | - | 0: Green, 1: Red, 2: Yellow |
+| Status | int | - | 0: Green, 1: Red, 2: Yellow, 3: Prepare |
 | Position | float array | 2 | Latitud and longitude of the traffic light position |
 | Time_to_Change | int | - | Time for the status to change |
 
